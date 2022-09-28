@@ -1,14 +1,17 @@
 import requests
 import colorama
+import smtplib,sys,ctypes
 import re
 import os
 import shutil
 from colorama import Fore, Back, Style
 from os import system
 from bs4 import BeautifulSoup
+
+
 colorama.init(autoreset=True)
 cookie = {                                            #Get cookies from your browser and past it here.
-	"ZHE" : "0e80d79a204500e91efcc1fa87dd2039",
+	"ZHE" : "401dd88889fa1e6a532530b0f80db626",
 	"PHPSESSID" : "h3n0g5pkhbbjpue5pde445st34"
 }
 system('mode con: cols=50 lines=70')                  #Set terminal size.
@@ -41,13 +44,15 @@ urls=[]                                                  #Create new list.
 notifiers = list(filter(lambda url: ".." not in url,notifiers))
 for i in range(len(notifiers)):
  print(Fore.RED +"     Grabbing sites from : "+str(notifiers[i]))
- for j in range(10):                                     #How many URLs to grab from each notifier. Changer 10 to whatever you need, recomended: 10 to 30.
+ for j in range(10):                                     #How many page URLs to grab from each notifier. Changer 10 to whatever you need, recomended: 10 to 30.
   verif = requests.get('http://www.zone-h.org/archive/notifier='+str(notifiers[i])+'/page='+str(j+1), cookies=cookie).content
   if 'If you often get this captcha when gathering data' in verif.decode('utf-8'):
    input('Please verify captcha and hit Enter ...')
   verif = requests.get('http://www.zone-h.org/archive/notifier='+str(notifiers[i])+'/page='+str(j+1), cookies=cookie).content
   soup = BeautifulSoup(verif, 'html.parser')
   links=soup.findAll("td", {"class": "defacepages"})
+  if os.name == 'nt':
+    ctypes.windll.kernel32.SetConsoleTitleW("Total notifiers: ["+str(len(notifiers))+"]" + " Total grabbed URLs: ["+str(len(urls))+"]")
   if '<strong>0</strong>' in str(links[0]):
   	break
   else:

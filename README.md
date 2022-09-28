@@ -1,6 +1,6 @@
 # Zone-H_Grabber
 
-Grab zoned websites from Zone-H.org with ease.
+Grab defaced websites from Zone-H.org with ease.
 
 
 Install python3 and install Colorama and BeautifulSoup using commands below
